@@ -4,6 +4,10 @@ const Joi = require('joi');
 // Mongoose Order Schema
 const orderSchema = new mongoose.Schema(
   {
+    orderId:{
+      type : String,
+      require:true,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -23,7 +27,7 @@ const orderSchema = new mongoose.Schema(
     },
     address: {
       type: String,
-      required: true,
+      // required: true,
       minlength: 10,
       maxlength: 500,  // Limit address length
     },
@@ -53,7 +57,7 @@ const validateOrder = (data) => {
     user: Joi.string().hex().length(24).required(),  // Validate MongoDB ObjectId for user
     product: Joi.array().items(Joi.string().hex().length(24).required()).min(1).required(),  // Validate product ObjectIds
     totalPrice: Joi.number().min(0).required(),  // Total price cannot be negative
-    address: Joi.string().min(10).max(500).required(),  // Address length validation
+    address: Joi.string().min(10).max(500),  // Address length validation
     status: Joi.string().valid('pending', 'shipped', 'delivered', 'cancelled').required(),  // Order status validation
     payment: Joi.string().hex().length(24).required(),  // Validate MongoDB ObjectId for payment
     delivery: Joi.string().hex().length(24).required(),  // Validate MongoDB ObjectId for delivery

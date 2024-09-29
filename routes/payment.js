@@ -41,7 +41,7 @@ router.post('/create/orderId', async (req, res) => {
         
         const result = validatePaymentVerification({ "order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
         if (result) {
-          const payment = await paymentModel.findOne({ orderId: razorpayOrderId });
+          const payment = await paymentModel.findOne({ orderId: razorpayOrderId, status : "pending" });
           payment.paymentId = razorpayPaymentId;
           payment.signature = signature;
           payment.status = 'completed';
@@ -55,6 +55,8 @@ router.post('/create/orderId', async (req, res) => {
         res.status(500).send('Error verifying payment');
         }
         });
+
+
 
 
         module.exports = router;
